@@ -1,10 +1,5 @@
-<script setup>
-import NavBarComponent from '@/components/NavBarComponent.vue';
-
-</script>
+<script setup></script>
 
 <template>
-    <main>
-        <NavBarComponent />
-    </main>
+  <main></main>
 </template>
