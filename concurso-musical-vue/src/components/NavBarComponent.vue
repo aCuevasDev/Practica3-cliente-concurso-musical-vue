@@ -6,7 +6,7 @@
             </RouterLink>
 
             <nav class="links">
-                <RouterLink to="/home" class="link" :class="{ active: $route.name === 'home' }">
+                <RouterLink to="/" class="link" :class="{ active: $route.name === 'home' }">
                     <span class="badge">Inicio</span>
                 </RouterLink>
 
@@ -20,7 +20,6 @@
             </nav>
         </div>
     </header>
-    <RouterView />
 </template>
 
 <script setup></script>
