@@ -1,5 +1,9 @@
-<script setup></script>
+<script setup>
+import QuizComponent from '@/components/QuizComponent.vue'
+</script>
 
 <template>
-  <main></main>
+  <main>
+    <QuizComponent />
+  </main>
 </template>
