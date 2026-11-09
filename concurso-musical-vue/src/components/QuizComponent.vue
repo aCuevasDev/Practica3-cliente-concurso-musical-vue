@@ -37,14 +37,14 @@
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
-          <span class="score__value">{{ score }} puntos</span>
+          <span class="score__value">{{ score.value }} puntos</span>
         </div>
       </header>
 
       <div class="progress">
         <div class="progress__labels">
           <span class="progress__step"
-            >Pregunta {{ questionNumber }} de {{ maxQuestionNumber }}</span
+            >Pregunta {{ questionNumber.value }} de {{ maxQuestionNumber.value }}</span
           >
           <span class="progress__percent">30%</span>
         </div>
@@ -69,16 +69,17 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useUsernameStore } from '@/stores/username-store'
+import { useUserStore } from '@/stores/username-store'
 import QuestionComponent from './QuestionComponent.vue'
 const username = ref('')
-const usernameStore = useUsernameStore()
+const score = ref('')
+const questionNumber = ref('')
+const maxQuestionNumber = 10
+const userStore = useUserStore()
 
-let score
-let questionNumber
-let maxQuestionNumber
-
-username.value = usernameStore.username
+username.value = userStore.username
+score.value = userStore.score
+questionNumber.value = userStore.score
 </script>
 
 <style scoped>

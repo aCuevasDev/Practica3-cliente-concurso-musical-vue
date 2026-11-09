@@ -46,36 +46,8 @@
   </div>
 
   <ul class="answers">
-    <li class="answers__item">
-      <button class="answer" type="button">Someone Like You</button>
-    </li>
-    <li class="answers__item" v-for="answer in answers">
-      {{ item.message }}
-    </li>
-    <li>
-      <button
-        class="answer answer--wrong"
-        type="button"
-        aria-label="Set Fire to the Rain, respuesta incorrecta"
-      >
-        <span>Set Fire to the Rain</span>
-        <svg
-          class="answer__icon"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M18 6 6 18"></path>
-          <path d="m6 6 12 12"></path>
-        </svg>
-      </button>
-    </li>
-    <li class="answers__item">
-      <button class="answer" type="button">Hello</button>
+    <li class="answers__item" v-for="answer in answers" :key="answer">
+      <button class="answer" type="button">{{ answer }}</button>
     </li>
   </ul>
 
@@ -84,10 +56,9 @@
 
 <script setup>
 import { Howl } from 'howler'
-import { stringifyQuery } from 'vue-router'
 const volume = 100
 
-let answers = { name: String }
+let answers = []
 
 let howl
 

@@ -82,13 +82,17 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useUsernameStore } from '@/stores/username-store'
+import { useUserStore } from '@/stores/username-store'
+import { useRouter } from 'vue-router'
+
 const username = ref('')
-const usernameStore = useUsernameStore()
+const userStore = useUserStore()
+const router = useRouter()
 
 function send() {
-  usernameStore.setUsername(username.value)
-  location.href = '/home'
+  userStore.setUsername(username.value)
+  router.push('/home')
+  // location.href = '/home'
 }
 </script>
 

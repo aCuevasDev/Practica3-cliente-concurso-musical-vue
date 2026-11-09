@@ -51,16 +51,6 @@ function playPreviousSong() {
   playSongController('before')
 }
 
-function playSongController(beforeOrAfter) {
-  if (isRandom) {
-    playRandomSong()
-    return
-  }
-
-  let songIndex = getSongIndexFor(beforeOrAfter)
-  playSong(songIndex)
-}
-
 function playRandomSong() {
   let randomIndex
   if (songs.length > 1) {
