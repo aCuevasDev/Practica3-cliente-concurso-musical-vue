@@ -37,13 +37,15 @@
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
-          <span class="score__value">20 puntos</span>
+          <span class="score__value">{{ score }} puntos</span>
         </div>
       </header>
 
       <div class="progress">
         <div class="progress__labels">
-          <span class="progress__step">Pregunta 3 de 10</span>
+          <span class="progress__step"
+            >Pregunta {{ questionNumber }} de {{ maxQuestionNumber }}</span
+          >
           <span class="progress__percent">30%</span>
         </div>
         <div
@@ -59,107 +61,7 @@
       </div>
 
       <article class="card">
-        <button
-          class="play"
-          type="button"
-          aria-label="Reproducir fragmento de la canción"
-          @click="playSong"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <polygon points="7 4 20 12 7 20 7 4"></polygon>
-          </svg>
-        </button>
-
-        <div class="audio">
-          <svg
-            class="audio__icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-          </svg>
-
-          <div class="audio__track" aria-hidden="true"></div>
-          <span class="audio__time">0s</span>
-        </div>
-
-        <p class="audio__caption">Reproducir fragmento de 5 segundos</p>
-
-        <div class="question">
-          <h1 class="question__title">¿Qué canción es?</h1>
-          <p class="question__song">
-            Rolling in the Deep <span class="question__artist">- Adele</span>
-          </p>
-        </div>
-
-        <ul class="answers">
-          <li class="answers__item">
-            <button class="answer" type="button">Someone Like You</button>
-          </li>
-          <li class="answers__item">
-            <button
-              class="answer answer--correct"
-              type="button"
-              aria-label="Rolling in the Deep, respuesta correcta"
-            >
-              <span>Rolling in the Deep</span>
-              <svg
-                class="answer__icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M20 6 9 17l-5-5"></path>
-              </svg>
-            </button>
-          </li>
-          <li class="answers__item">
-            <button
-              class="answer answer--wrong"
-              type="button"
-              aria-label="Set Fire to the Rain, respuesta incorrecta"
-            >
-              <span>Set Fire to the Rain</span>
-              <svg
-                class="answer__icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M18 6 6 18"></path>
-                <path d="m6 6 12 12"></path>
-              </svg>
-            </button>
-          </li>
-          <li class="answers__item">
-            <button class="answer" type="button">Hello</button>
-          </li>
-        </ul>
-
-        <button class="next" type="button">Siguiente Pregunta</button>
+        <QuestionComponent />
       </article>
     </div>
   </section>
@@ -168,42 +70,15 @@
 <script setup>
 import { ref } from 'vue'
 import { useUsernameStore } from '@/stores/username-store'
-import { Howl } from 'howler'
+import QuestionComponent from './QuestionComponent.vue'
 const username = ref('')
 const usernameStore = useUsernameStore()
-let howl
 
-const volume = 100
+let score
+let questionNumber
+let maxQuestionNumber
 
 username.value = usernameStore.username
-
-function playSong() {
-  if (howl) howl.unload()
-  let song = getRandomSong()
-
-  howl = new Howl({
-    src: song,
-    volume: volume,
-    onend: onSongEnd,
-    onload: onHowlerLoaded,
-    onloaderror: onHowlerLoadError,
-    onplayerror: onHowlerPlayError,
-  })
-}
-
-function getRandomSong() {}
-
-function onSongEnd() {}
-
-function onHowlerLoaded() {}
-
-function onHowlerLoadError(id, error) {
-  console.error(`Error loading audio (id ${id}):`, error)
-}
-
-function onHowlerPlayError(id, error) {
-  console.error(`Error playing audio (id ${id}):`, error)
-}
 </script>
 
 <style scoped>
