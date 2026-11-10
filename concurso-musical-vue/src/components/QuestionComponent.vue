@@ -5,6 +5,7 @@
     aria-label="Reproducir fragmento de la canción"
     @click="playSong"
   >
+    PLAY PLACEHOLDER
     <svg
       viewBox="0 0 24 24"
       fill="none"
@@ -20,7 +21,7 @@
 
   <div class="audio">
     <svg
-      class="audio__icon"
+      class="audio_icon"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -34,19 +35,19 @@
       <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
     </svg>
 
-    <div class="audio__track" aria-hidden="true"></div>
-    <span class="audio__time">0s</span>
+    <div class="audio_track" aria-hidden="true"></div>
+    <span class="audio_time">0s</span>
   </div>
 
   <p class="audio__caption">Reproducir fragmento de 5 segundos</p>
 
   <div class="question">
-    <h1 class="question__title">¿Qué canción es?</h1>
-    <p class="question__song">Rolling in the Deep <span class="question__artist">- Adele</span></p>
+    <h1 class="question_title">¿Qué canción es?</h1>
+    <!-- <p class="question__song">Rolling in the Deep <span class="question__artist">- Adele</span></p> -->
   </div>
 
   <ul class="answers">
-    <li class="answers__item" v-for="answer in answers" :key="answer">
+    <li class="answers_item" v-for="answer in answers" :key="answer">
       <button class="answer" type="button">{{ answer }}</button>
     </li>
   </ul>
@@ -93,4 +94,8 @@ function onHowlerPlayError(id, error) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.audio_icon {
+  width: 50px;
+}
+</style>

@@ -18,9 +18,9 @@
             </svg>
           </span>
 
-          <div class="game-header__player">
-            <p class="game-header__title">Adivina la Canción</p>
-            <p class="game-header__name">{{ username }}</p>
+          <div class="game-header_player">
+            <p class="game-header_title">Adivina la Canción</p>
+            <p class="game-header_name">{{ username }}</p>
           </div>
         </div>
 
@@ -37,14 +37,14 @@
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
-          <span class="score__value">{{ score.value }} puntos</span>
+          <span class="score__value">{{ score }} puntos</span>
         </div>
       </header>
 
       <div class="progress">
         <div class="progress__labels">
           <span class="progress__step"
-            >Pregunta {{ questionNumber.value }} de {{ maxQuestionNumber.value }}</span
+            >Pregunta {{ questionNumber }} de {{ maxQuestionNumber }}</span
           >
           <span class="progress__percent">30%</span>
         </div>
@@ -69,15 +69,21 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useUserStore } from '@/stores/username-store'
+import { useUserStore } from '@/stores/user-store.js'
 import QuestionComponent from './QuestionComponent.vue'
+
+// TODO
+import songs from '@/songs.json'
+import questions from '@/questions.json'
 
 const username = ref('')
 const score = ref('')
 const questionNumber = ref('')
 const maxQuestionNumber = 10
 const userStore = useUserStore()
-const songStore = songStore()
+
+// push questions already answered to array
+const questionsDone = []
 
 username.value = userStore.username
 score.value = userStore.score

@@ -82,7 +82,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useUserStore } from '@/stores/username-store'
+import { useUserStore } from '@/stores/user-store'
 import { useRouter } from 'vue-router'
 
 const username = ref('')

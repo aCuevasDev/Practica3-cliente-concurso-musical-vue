@@ -23,7 +23,6 @@
     </p>
 
     <div class="actions">
-      <!-- <a href="/play" class="button button-primary"> -->
       <RouterLink to="/play" class="button button-primary">
         <svg
           id="playSvg"
@@ -39,7 +38,6 @@
         Comenzar a Jugar
       </RouterLink>
 
-      <!-- <a href="/ranking" class="button button-secondary"> -->
       <RouterLink to="/ranking" class="button button-primary">
         <svg
           id="rankingSvg"
