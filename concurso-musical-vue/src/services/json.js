@@ -3,9 +3,13 @@ import { Song } from '@/class/Song'
 import { useSongStore } from '@/stores/song-store'
 import js from '@eslint/js'
 
+import songs from '@/songs.json'
+import questions from '@/questions.json'
+
 export const SONGS_SRC = '@/songs.json'
 export const QUESTIONS_SRC = '@/questions.json'
 
+/** @deprecated */
 export async function loadJson(src = SONGS_SRC) {
   try {
     const response = await fetch(src)
@@ -21,6 +25,7 @@ export async function loadJson(src = SONGS_SRC) {
   }
 }
 
+/** @deprecated */
 export async function loadGameData() {
   const [songs, questions] = await Promise.all([loadJson(SONGS_SRC), loadJson(QUESTIONS_SRC)])
   return { songs: songs ?? [], questions: questions ?? [] }
