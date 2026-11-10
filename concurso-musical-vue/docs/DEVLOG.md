@@ -44,9 +44,30 @@ _Updated 2026-11-10 · replaced on every run._
 - Added `docs/DEVLOG.md` with the three previous working days reconstructed from `git log`.
 - Added the global command `~/.config/opencode/commands/resumen.md` so `/resumen` (today, week,
   or a date range) locates this log from any project and returns a short summary of it.
+- Moved `P1-Puntuable.docx` under `concurso-musical-vue/`, deleted the stray root
+  `package-lock.json`, and gitignored Word temp files.
+- `services/json.js`: `loadGameData()` loads songs + questions in parallel and feeds the store;
+  `song-store` gained an `isSongsLoaded` getter and `setSongs` / `setQuestions` actions.
+- Renamed `username-store.js` → `user-store.js` (`useUserStore`); router guard updated.
+- (inferred, uncommitted) Swapped the fetch loader for static `@/songs.json` / `@/questions.json`
+  imports and marked `loadJson` / `loadGameData` `@deprecated`; removed the `loadGameData()`
+  call from `main.js`.
+- (inferred, uncommitted) `QuestionComponent.vue`: BEM class names simplified
+  (`audio_icon`, `question_title`, `answers_item`…), hardcoded song title commented out.
+
+**Decisions / why:**
+- JSON imported at build time instead of `fetch`-ed at runtime, because the `@` alias is a Vite
+  alias and 404s as a URL.
+
+**Blockers:**
+- `song-store.clear` is still an arrow function, so `this` is not the store.
+- Data flow into the quiz is not verified in the browser yet.
 
 **Next:**
-- Use it at the end of every session, before closing the editor.
+- Drive `QuizComponent` from `song-store` and compute score/progress for real.
+
+**Commits:** `96f5b56` fix: ignoring word temp files · `676633b` docs: docs moved from root
+folder · `210ef05` docs: devlog · `f486e7f` wip: redirect and loading songs/questions
 
 ---
 
