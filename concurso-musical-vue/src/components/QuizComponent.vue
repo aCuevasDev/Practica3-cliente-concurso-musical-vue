@@ -71,11 +71,13 @@
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/username-store'
 import QuestionComponent from './QuestionComponent.vue'
+
 const username = ref('')
 const score = ref('')
 const questionNumber = ref('')
 const maxQuestionNumber = 10
 const userStore = useUserStore()
+const songStore = songStore()
 
 username.value = userStore.username
 score.value = userStore.score

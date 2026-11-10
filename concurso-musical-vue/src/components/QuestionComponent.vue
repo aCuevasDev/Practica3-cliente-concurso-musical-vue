@@ -55,10 +55,12 @@
 </template>
 
 <script setup>
+import { useSongStore } from '@/stores/song-store'
 import { Howl } from 'howler'
 const volume = 100
+const songStore = useSongStore()
 
-let answers = []
+let answers = songStore.questions
 
 let howl
 

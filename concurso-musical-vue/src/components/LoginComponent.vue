@@ -91,7 +91,7 @@ const router = useRouter()
 
 function send() {
   userStore.setUsername(username.value)
-  router.push('/home')
+  router.push('/') // home
   // location.href = '/home'
 }
 </script>

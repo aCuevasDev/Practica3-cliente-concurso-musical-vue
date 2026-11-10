@@ -8,10 +8,20 @@ export const useSongStore = defineStore('song', {
     /**@property {Question[]} questions **/
     questions: [],
   }),
+  getters: {
+    isSongsLoaded: (state) => Boolean(state.songs.length > 0 && state.questions.length > 0),
+  },
   actions: {
     clear: () => {
       this.songs = []
       this.questions = []
+    },
+    onSongsLoaded: () => {},
+    setSongs: (songs) => {
+      this.songs = songs
+    },
+    setQuestions: (questions) => {
+      this.questions = questions
     },
   },
 })

@@ -23,7 +23,8 @@
     </p>
 
     <div class="actions">
-      <a href="play" class="button button-primary">
+      <!-- <a href="/play" class="button button-primary"> -->
+      <RouterLink to="/play" class="button button-primary">
         <svg
           id="playSvg"
           viewBox="0 0 24 24"
@@ -36,9 +37,10 @@
           <polygon points="7 4 20 12 7 20 7 4"></polygon>
         </svg>
         Comenzar a Jugar
-      </a>
+      </RouterLink>
 
-      <a href="ranking" class="button button-secondary">
+      <!-- <a href="/ranking" class="button button-secondary"> -->
+      <RouterLink to="/ranking" class="button button-primary">
         <svg
           id="rankingSvg"
           viewBox="0 0 24 24"
@@ -55,7 +57,7 @@
           <path d="M17 6h3v3a4 4 0 0 1-4 4"></path>
         </svg>
         Ver Ranking
-      </a>
+      </RouterLink>
     </div>
 
     <div class="headphones-circle" aria-label="Auriculares musicales">
