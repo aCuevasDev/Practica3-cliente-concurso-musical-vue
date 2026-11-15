@@ -46,17 +46,17 @@
           <span class="progress__step"
             >Pregunta {{ questionNumber }} de {{ MAX_QUESTIONS_NUMBER }}</span
           >
-          <span class="progress__percent">30%</span>
+          <span class="progress__percent">{{ progressPercent }}%</span>
         </div>
         <div
           class="progress__track"
           role="progressbar"
           aria-label="Progreso del concurso"
           aria-valuemin="0"
-          aria-valuemax="10"
-          aria-valuenow="3"
+          aria-valuemax="100"
+          :aria-valuenow="progressPercent"
         >
-          <span class="progress__fill"></span>
+          <span class="progress__fill" :style="{ width: progressPercent + '%' }"></span>
         </div>
       </div>
 
@@ -109,6 +109,9 @@ const rankingStore = useRankingStore()
 let scoreSaved = false
 const isFinished = computed(
   () => questionNumber.value === MAX_QUESTIONS_NUMBER && correctAnswer.value !== null,
+)
+const progressPercent = computed(() =>
+  Math.round((questionNumber.value / MAX_QUESTIONS_NUMBER) * 100),
 )
 
 const questionsLinked = questions.map((question) => {
@@ -308,7 +311,6 @@ function onQuizFinished() {
 
 .progress__fill {
   display: block;
-  width: 30%;
   height: 100%;
   border-radius: inherit;
   background: #0b0b12;
