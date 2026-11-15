@@ -18,9 +18,9 @@
             </svg>
           </span>
 
-          <div class="game-header_player">
-            <p class="game-header_title">Adivina la Canción</p>
-            <p class="game-header_name">{{ username }}</p>
+          <div class="game-header__player">
+            <p class="game-header__title">Adivina la Canción</p>
+            <p class="game-header__name">{{ username }}</p>
           </div>
         </div>
 
@@ -67,11 +67,8 @@
         :correct-answer="correctAnswer"
         :selected-answer="selectedAnswer"
         @select-answer="onAnswerSelect"
+        @next-question="goToNextQuestion"
       />
-
-      <button :disabled="correctAnswer == null" @click="goToNextQuestion">
-        Siguiente Pregunta
-      </button>
     </div>
   </section>
 </template>
@@ -253,231 +250,9 @@ setup()
   background: #0b0b12;
 }
 
-.play {
-  display: grid;
-  place-items: center;
-  width: 54px;
-  height: 54px;
-  margin: 0 auto;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  color: #ffffff;
-  background: linear-gradient(90deg, #a855f7 0%, #ec4899 100%);
-  box-shadow: 0 10px 22px rgba(168, 85, 247, 0.35);
-  cursor: pointer;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.play svg {
-  width: 18px;
-  height: 18px;
-  margin-left: 2px;
-}
-
-.play:hover {
-  transform: scale(1.04);
-  box-shadow: 0 12px 26px rgba(168, 85, 247, 0.42);
-}
-
-.play:focus-visible {
-  outline: 2px solid #db2777;
-  outline-offset: 3px;
-}
-
-.audio {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.audio__icon {
-  width: 17px;
-  height: 17px;
-  flex: none;
-  color: #6b7280;
-}
-
-.audio__track {
-  flex: 1;
-  height: 6px;
-  border-radius: 999px;
-  background: #e5e6ea;
-}
-
-.audio__time {
-  flex: none;
-  font-size: 11px;
-  line-height: 1;
-  color: #9ca3af;
-}
-
-.audio__caption {
-  margin: 10px 0 0;
-  font-size: 10.5px;
-  line-height: 1.2;
-  text-align: center;
-  color: #9ca3af;
-}
-
-.question {
-  margin-top: 42px;
-  text-align: center;
-}
-
-.question__title {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 1.25;
-  color: #1f2937;
-}
-
-.question__song {
-  margin: 3px 0 0;
-  font-size: 12.5px;
-  font-weight: 600;
-  line-height: 1.2;
-  background: linear-gradient(90deg, #9333ea 0%, #db2777 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-}
-
-.question__artist {
-  font-weight: 500;
-}
-
-.answers {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  margin: 31px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.answers__item {
-  margin: 0;
-}
-
-.answer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  width: 100%;
-  min-height: 42px;
-  padding: 0 14px;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.2;
-  text-align: left;
-  color: #374151;
-  background: #f3f4f6;
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.answer:hover {
-  border-color: #c4c8cf;
-  background: #eef0f3;
-}
-
-.answer:focus-visible {
-  outline: 2px solid #a855f7;
-  outline-offset: 2px;
-}
-
-.answer--correct,
-.answer--correct:hover {
-  border-color: #3ed472;
-  color: #1f2937;
-  background: #dcfce7;
-}
-
-.answer--wrong,
-.answer--wrong:hover {
-  border-color: #f4565c;
-  color: #1f2937;
-  background: #ffe2e2;
-}
-
-.answer__icon {
-  width: 15px;
-  height: 15px;
-  flex: none;
-}
-
-.answer--correct .answer__icon {
-  color: #16a34a;
-}
-
-.answer--wrong .answer__icon {
-  color: #ef4444;
-}
-
-.next {
-  width: 100%;
-  min-height: 30px;
-  margin-top: 31px;
-  padding: 0 16px;
-  border: none;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1;
-  color: #ffffff;
-  background: linear-gradient(90deg, #9b16f6 0%, #e2007e 100%);
-  box-shadow: 0 6px 16px rgba(190, 24, 110, 0.22);
-  cursor: pointer;
-  transition:
-    filter 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.next:hover {
-  filter: brightness(1.04);
-  box-shadow: 0 8px 20px rgba(190, 24, 110, 0.28);
-}
-
-.next:focus-visible {
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
-}
-
 @media (max-width: 520px) {
   .quiz {
     padding: 18px 14px 22px;
-  }
-
-  .card {
-    padding: 18px 16px;
-    border-radius: 14px;
-  }
-
-  .question {
-    margin-top: 34px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .play,
-  .answer,
-  .next {
-    transition: none;
-  }
-
-  .play:hover {
-    transform: none;
   }
 }
 </style>

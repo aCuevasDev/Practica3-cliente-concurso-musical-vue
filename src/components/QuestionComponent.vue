@@ -7,7 +7,6 @@
         aria-label="Reproducir fragmento de la canción"
         @click="playSong"
       >
-        PLAY PLACEHOLDER
         <svg
           viewBox="0 0 24 24"
           fill="none"
@@ -48,7 +47,7 @@
       <div class="question">
         <h1 class="question__title">¿Qué canción es?</h1>
         <span v-if="correctAnswer" class="correct__answer"
-          >{{ correctAnswer.text }} - {{ question.song.artist }}
+          >{{ correctAnswer.text }} - {{ question.song.author }}
         </span>
       </div>
 
@@ -65,6 +64,9 @@
           </button>
         </li>
       </ul>
+      <button class="next" :disabled="correctAnswer == null" @click="emit('next-question')">
+        Siguiente Pregunta
+      </button>
     </div>
   </div>
 </template>
@@ -79,7 +81,7 @@ const props = defineProps({
   correctAnswer: { type: Answer, default: null },
   selectedAnswer: { type: Answer, default: null },
 })
-const emit = defineEmits(['select-answer'])
+const emit = defineEmits(['select-answer', 'next-question'])
 const isAnswered = computed(() => props.correctAnswer !== null)
 
 function answerStyleClass(answer) {
@@ -129,32 +131,226 @@ function onHowlerPlayError(id, error) {
 </script>
 
 <style scoped>
+.card-container {
+  margin-top: 16px;
+  padding: 26px 24px 30px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 22px 44px rgba(88, 12, 62, 0.18);
+}
+
+.card {
+  padding: 0;
+  background: transparent;
+}
+
+.audio--container {
+  text-align: center;
+}
+
+.play {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  margin: 0 auto;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  color: #ffffff;
+  background: linear-gradient(90deg, #a855f7 0%, #ec4899 100%);
+  box-shadow: 0 10px 22px rgba(168, 85, 247, 0.35);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.play:hover {
+  transform: scale(1.04);
+  box-shadow: 0 12px 26px rgba(168, 85, 247, 0.42);
+}
+
+.play:focus-visible {
+  outline: 2px solid #db2777;
+  outline-offset: 3px;
+}
+
+.play svg {
+  width: 18px;
+  height: 18px;
+  margin-left: 2px;
+}
+
+.audio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+
 .audio_icon {
-  width: 50px;
+  width: 17px;
+  height: 17px;
+  flex: none;
+  color: #6b7280;
+}
+
+.audio__track {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: #e5e6ea;
+}
+
+.audio__time {
+  flex: none;
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.audio__caption {
+  margin: 10px 0 0;
+  font-size: 10.5px;
+  line-height: 1.2;
+  text-align: center;
+  color: #9ca3af;
+}
+
+.question {
+  margin-top: 42px;
+  text-align: center;
+}
+
+.question__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #1f2937;
 }
 
 .correct__answer {
-  color: blueviolet;
-  font-weight: bolder;
+  display: block;
+  margin-top: 3px;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.2;
+  background: linear-gradient(90deg, #9333ea 0%, #db2777 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.answers {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 31px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.answers__item {
+  margin: 0;
+}
+
+.answer {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: left;
+  color: #374151;
+  background: #ffffff;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.answer:not(:disabled):hover {
+  border-color: #c4c8cf;
+  background: #f8f9fb;
+  cursor: pointer;
+}
+
+.answer:focus-visible {
+  outline: 2px solid #a855f7;
+  outline-offset: 2px;
 }
 
 .answer--correct {
-  background: #10b981;
-  border-color: #046b49;
+  border-color: #3ed472;
+  color: #1f2937;
+  background: #dcfce7;
 }
+
 .answer--wrong {
-  background: #ef4444;
-  border-color: #990c0c;
+  border-color: #f4565c;
+  color: #1f2937;
+  background: #ffe2e2;
 }
+
 .answer--dimmed {
   opacity: 0.5;
 }
 
-.card-container {
-  margin-top: 16px;
-  padding: 20px 21px;
-  border-radius: 16px;
-  background: #ffffff;
-  box-shadow: 0 22px 44px rgba(88, 12, 62, 0.18);
+.next {
+  width: 100%;
+  min-height: 30px;
+  margin-top: 31px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  color: #ffffff;
+  background: linear-gradient(90deg, #9b16f6 0%, #e2007e 100%);
+  box-shadow: 0 6px 16px rgba(190, 24, 110, 0.22);
+  cursor: pointer;
+  transition:
+    filter 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.next:hover {
+  filter: brightness(1.04);
+  box-shadow: 0 8px 20px rgba(190, 24, 110, 0.28);
+}
+
+.next:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+@media (max-width: 520px) {
+  .card-container {
+    padding: 18px 16px 22px;
+    border-radius: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .play,
+  .answer {
+    transition: none;
+  }
+
+  .play:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .next {
+    transition: none;
+  }
 }
 </style>
