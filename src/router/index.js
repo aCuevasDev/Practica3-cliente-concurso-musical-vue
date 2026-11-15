@@ -34,7 +34,6 @@ const router = createRouter({
 router.beforeEach((to) => {
   const userStore = useUserStore()
 
-  const logueado = userStore.isUserLoggedIn
   if (to.meta.requiresLogin && !userStore.isUserLoggedIn) {
     return { name: 'login', query: { redirect: to.fullPath } }
   }
