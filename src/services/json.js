@@ -9,7 +9,7 @@ import questions from '@/questions.json'
 export const SONGS_SRC = '@/songs.json'
 export const QUESTIONS_SRC = '@/questions.json'
 
-/** @deprecated */
+/** @deprecated use import: import songs from '@/songs.json' */
 export async function loadJson(src = SONGS_SRC) {
   try {
     const response = await fetch(src)
