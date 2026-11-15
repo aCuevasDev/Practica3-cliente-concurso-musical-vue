@@ -47,21 +47,21 @@
   </div>
 
   <ul class="answers">
-    <li class="answers_item" v-for="answer in answers" :key="answer">
-      <button class="answer" type="button">{{ answer }}</button>
+    <li class="answers_item" v-for="answer in question.answers" :key="answer">
+      <button class="answer" type="button">{{ answer.text }}</button>
     </li>
   </ul>
-
-  <button class="next" type="button">Siguiente Pregunta</button>
 </template>
 
 <script setup>
-import { useSongStore } from '@/stores/song-store'
+import { Question } from '@/class/Question'
 import { Howl } from 'howler'
 const volume = 100
-const songStore = useSongStore()
-
-let answers = songStore.questions
+const props = defineProps({
+  question: { type: Question, required: true },
+  selectedIndex: { type: Number, default: null },
+})
+const emit = defineEmits(['select-answer'])
 
 let howl
 

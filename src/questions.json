@@ -1,7 +1,7 @@
 [
   {
-    "songId": "1",
-    "question": "¿Qué canción estás escuchando?",
+    "questionId": 1,
+    "songId": 1,
     "answers": [
       { "text": "Avocado", "isCorrect": false },
       { "text": "Fantasy", "isCorrect": true },
@@ -10,8 +10,8 @@
     ]
   },
   {
-    "songId": "2",
-    "question": "¿Qué canción estás escuchando?",
+    "questionId": 2,
+    "songId": 2,
     "answers": [
       { "text": "Vibing", "isCorrect": false },
       { "text": "Dusty Roads", "isCorrect": false },
@@ -20,8 +20,8 @@
     ]
   },
   {
-    "songId": "3",
-    "question": "¿Qué canción estás escuchando?",
+    "questionId": 3,
+    "songId": 3,
     "answers": [
       { "text": "Sharp Stones", "isCorrect": false },
       { "text": "Last Summer", "isCorrect": false },
@@ -30,8 +30,8 @@
     ]
   },
   {
-    "songId": "4",
-    "question": "¿Qué canción estás escuchando?",
+    "questionId": 4,
+    "songId": 4,
     "answers": [
       { "text": "Carnival", "isCorrect": true },
       { "text": "Follow The Sun", "isCorrect": false },
@@ -40,8 +40,8 @@
     ]
   },
   {
-    "songId": "5",
-    "question": "¿Qué canción estás escuchando?",
+    "questionId": 5,
+    "songId": 5,
     "answers": [
       { "text": "Okay Energy", "isCorrect": false },
       { "text": "Last Summer", "isCorrect": true },
@@ -50,8 +50,8 @@
     ]
   },
   {
-    "songId": "6",
-    "question": "¿Qué canción estás escuchando?",
+    "questionId": 6,
+    "songId": 6,
     "answers": [
       { "text": "Avocado", "isCorrect": false },
       { "text": "Funk Station", "isCorrect": false },
@@ -60,8 +60,8 @@
     ]
   },
   {
-    "songId": "7",
-    "question": "¿Qué canción estás escuchando?",
+    "questionId": 7,
+    "songId": 7,
     "answers": [
       { "text": "Dusty Roads", "isCorrect": false },
       { "text": "Follow The Sun", "isCorrect": true },
@@ -70,8 +70,8 @@
     ]
   },
   {
-    "songId": "8",
-    "question": "¿Qué canción estás escuchando?",
+    "questionId": 8,
+    "songId": 8,
     "answers": [
       { "text": "Fantasy", "isCorrect": false },
       { "text": "Sharp Stones", "isCorrect": false },
@@ -80,8 +80,8 @@
     ]
   },
   {
-    "songId": "9",
-    "question": "¿Qué canción estás escuchando?",
+    "questionId": 9,
+    "songId": 9,
     "answers": [
       { "text": "Carnival", "isCorrect": false },
       { "text": "Funk Station", "isCorrect": true },
@@ -90,8 +90,8 @@
     ]
   },
   {
-    "songId": "10",
-    "question": "¿Qué canción estás escuchando?",
+    "questionId": 10,
+    "songId": 10,
     "answers": [
       { "text": "Vibing", "isCorrect": false },
       { "text": "Back Alley", "isCorrect": false },
@@ -100,8 +100,8 @@
     ]
   },
   {
-    "songId": "11",
-    "question": "¿Qué canción estás escuchando?",
+    "questionId": 11,
+    "songId": 11,
     "answers": [
       { "text": "Sharp Stones", "isCorrect": true },
       { "text": "Fantasy", "isCorrect": false },

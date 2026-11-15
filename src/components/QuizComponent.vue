@@ -61,8 +61,16 @@
       </div>
 
       <article class="card">
-        <QuestionComponent />
+        <QuestionComponent
+          :key="liveQuestion.value.questionId"
+          :question="liveQuestion"
+          :selectedIndex="selectedIndex"
+          @select-answer="answerSelected"
+        />
       </article>
+      <button :disabled="selectedIndex == null" @click="goToNextQuestion">
+        Siguiente Pregunta
+      </button>
     </div>
   </section>
 </template>
@@ -75,19 +83,60 @@ import QuestionComponent from './QuestionComponent.vue'
 // TODO
 import songs from '@/songs.json'
 import questions from '@/questions.json'
+import { Question } from '@/class/Question.js'
+
+const POINTS_PER_CORRECT_ANSWER = 10
 
 const username = ref('')
-const score = ref('')
-const questionNumber = ref('')
+const score = ref(null)
+const questionNumber = ref(null)
+const liveQuestion = ref(null)
+const selectedIndex = ref(null)
+
 const maxQuestionNumber = 10
 const userStore = useUserStore()
 
+const questionsLinked = questions.map((question) => {
+  question.song = songs.find((song) => song.id === question.songId)
+  return new Question(question.id, question.song, question.answers)
+})
 // push questions already answered to array
 const questionsDone = []
 
 username.value = userStore.username
 score.value = userStore.score
-questionNumber.value = userStore.score
+questionNumber.value = 0
+
+function drawRandomQuestionFromPool() {
+  const randomIndex = Math.floor(Math.random() * questionsLinked.length)
+  const randomQuestion = questionsLinked.splice(randomIndex, 1).pop()
+  return randomQuestion
+}
+
+function goToNextQuestion() {
+  if (liveQuestion.value) questionsDone.push(liveQuestion.value)
+  liveQuestion.value = drawRandomQuestionFromPool()
+  questionNumber.value++
+}
+
+function updateScore() {}
+
+/**  @param {Answer} answer */
+function answerSelected(answer) {
+  if (selectedIndex.value !== null) return
+
+  const answerIndex = liveQuestion.value.answers.findIndex((answr) => answr.text === answer.text)
+  selectedIndex.value = answerIndex
+
+  const isCorrect = liveQuestion.value.answers[answerIndex].isCorrect
+  if (isCorrect) score.value += POINTS_PER_CORRECT_ANSWER
+}
+
+function setup() {
+  goToNextQuestion()
+}
+
+setup()
 </script>
 
 <style scoped>

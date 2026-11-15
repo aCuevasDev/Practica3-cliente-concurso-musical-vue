@@ -1,3 +1,4 @@
+
 export class Answer {
   constructor(text, isCorrect = false) {
     this.text = text
@@ -6,10 +7,12 @@ export class Answer {
 }
 
 export class Question {
-  constructor(songId, answers = [], question = '¿Qué canción estás escuchando?') {
-    this.songId = songId
-    this.question = question
+  /** @param {Song} song*/
+  constructor(questionId,song, answers = []) {
+    this.questionId = questionId
+    /**@property {Song} song (I miss typescript)**/
+    this.song = song
+    /** @param {Answer[]} answers */
     this.answers = answers
-    this.isUsedThisSession = false
   }
 }

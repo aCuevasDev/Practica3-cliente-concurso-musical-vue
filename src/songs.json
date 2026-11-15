@@ -1,6 +1,6 @@
 [
     {
-        "id": "1",
+        "id": 1,
         "name": "Fantasy",
         "author": "Pufino",
         "picture": "songs/covers/pufino-fantasy.webp",
@@ -8,7 +8,7 @@
         "duration": 131
     },
     {
-        "id": "2",
+        "id": 2,
         "name": "Avocado",
         "author": "Pufino",
         "picture": "songs/covers/pufino-avocado.webp",
@@ -16,7 +16,7 @@
         "duration": 167
     },
     {
-        "id": "3",
+        "id": 3,
         "name": "Vibing",
         "author": "Pufino",
         "picture": "songs/covers/pufino-vibing.webp",
@@ -24,7 +24,7 @@
         "duration": 132
     },
     {
-        "id": "4",
+        "id": 4,
         "name": "Carnival",
         "author": "Aylex",
         "picture": "songs/covers/aylex-carnival.webp",
@@ -32,7 +32,7 @@
         "duration": 110
     },
     {
-        "id": "5",
+        "id": 5,
         "name": "Last Summer",
         "author": "Aylex",
         "picture": "songs/covers/aylex-last-summer.webp",
@@ -40,7 +40,7 @@
         "duration": 172
     },
     {
-        "id": "6",
+        "id": 6,
         "name": "Okay Energy",
         "author": "Aylex",
         "picture": "songs/covers/aylex-okay-energy.webp",
@@ -48,7 +48,7 @@
         "duration": 132
     },
     {
-        "id": "7",
+        "id": 7,
         "name": "Follow The Sun",
         "author": "Luke Bergs & Waesto",
         "picture": "songs/covers/luke-bergs-waesto-follow-the-sun.webp",
@@ -56,7 +56,7 @@
         "duration": 177
     },
     {
-        "id": "8",
+        "id": 8,
         "name": "Back Alley",
         "author": "Burgundy X",
         "picture": "songs/covers/burgundy-x-back-alley.webp",
@@ -64,7 +64,7 @@
         "duration": 107
     },
     {
-        "id": "9",
+        "id": 9,
         "name": "Funk Station",
         "author": "Tetuano",
         "picture": "songs/covers/tetuano-funk-station.webp",
@@ -72,7 +72,7 @@
         "duration": 150
     },
     {
-        "id": "10",
+        "id": 10,
         "name": "Dusty Roads",
         "author": "Calima",
         "picture": "songs/covers/calima-dusty-roads.webp",
@@ -80,7 +80,7 @@
         "duration": 138
     },
     {
-        "id": "11",
+        "id": 11,
         "name": "Sharp Stones",
         "author": "Dagored",
         "picture": "songs/covers/dagored-sharp-stones.webp",
