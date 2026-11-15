@@ -79,8 +79,9 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useRankingStore } from '@/stores/ranking-store.js'
 import { useUserStore } from '@/stores/user-store.js'
 import QuestionComponent from './QuestionComponent.vue'
 
@@ -104,6 +105,8 @@ const elapsedMs = ref(0)
 
 const router = useRouter()
 const userStore = useUserStore()
+const rankingStore = useRankingStore()
+let scoreSaved = false
 const isFinished = computed(
   () => questionNumber.value === MAX_QUESTIONS_NUMBER && correctAnswer.value !== null,
 )
@@ -127,6 +130,10 @@ questionNumber.value = 0
 
 onMounted(() => {
   setup()
+})
+
+onUnmounted(() => {
+  musicPlayer.destroy()
 })
 
 function drawRandomQuestionFromPool() {
@@ -179,7 +186,17 @@ function onPlaySongRequested() {
 }
 
 function onQuizFinished() {
-  router.push('/finished') // home
+  if (!scoreSaved) {
+    const totalQuestions = userStore.totalQuestions
+    const accuracy = totalQuestions
+      ? Math.round((userStore.questionsCorrect.length / totalQuestions) * 100)
+      : 0
+
+    rankingStore.addScore(userStore.username, userStore.score, accuracy)
+    scoreSaved = true
+  }
+
+  router.push('/finished')
 }
 </script>
 
