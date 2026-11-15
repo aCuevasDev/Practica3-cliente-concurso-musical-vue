@@ -1,0 +1,30 @@
+[
+  {
+    "scoreId": 1,
+    "player": "Javi",
+    "score": 90,
+    "accuracy": 90,
+    "date": "2025-11-03"
+  },
+  {
+    "scoreId": 2,
+    "player": "Josep",
+    "score": 80,
+    "accuracy": 80,
+    "date": "2025-11-03"
+  },
+  {
+    "scoreId": 3,
+    "player": "Victor",
+    "score": 80,
+    "accuracy": 80,
+    "date": "2025-11-03"
+  },
+  {
+    "scoreId": 4,
+    "player": "Javi",
+    "score": 50,
+    "accuracy": 50,
+    "date": "2025-11-03"
+  }
+]
