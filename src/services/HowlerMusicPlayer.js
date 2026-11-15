@@ -10,6 +10,8 @@ export class HowlerMusicPlayer extends MusicPlayer {
   #volume = 1
   #stopTimer = null
   #progressTimer = null
+  #clipId = null
+  #clipStart = null
 
   /**
    * @param {{
@@ -27,15 +29,20 @@ export class HowlerMusicPlayer extends MusicPlayer {
   }
 
   playClip(song) {
-    this.destroy() // cancels any previous clip
+    // Same song again: replay the same clip without reloading
+    if (this.#howl && this.#clipId === song.id) {
+      // If it's still loading, onload will start it, so ignore the extra click
+      if (this.#howl.state() === 'loaded') this.#startClip(this.#howl)
+      return
+    }
+
+    this.destroy()
+    this.#clipId = song.id
 
     const howl = new Howl({
       src: [song.file],
       volume: this.#volume,
-      onload: () => {
-        if (this.#howl !== howl) return // a newer clip replaced this one
-        this.#startClip(howl)
-      },
+      onload: () => this.#onHowlerLoad(howl),
       onplay: () => this.#onHowlerPlay(howl),
       onloaderror: (id, error) => this.onError?.(error),
       onplayerror: (id, error) => this.onError?.(error),
@@ -43,12 +50,21 @@ export class HowlerMusicPlayer extends MusicPlayer {
     this.#howl = howl
   }
 
-  #startClip(howl) {
+  #onHowlerLoad(howl) {
+    if (this.#howl !== howl) return // a newer clip replaced this one
+
     const clipSeconds = this.#clipDurationMs / 1000
     const maxStart = Math.max(0, howl.duration() - clipSeconds)
-    const start = Math.random() * maxStart
+    this.#clipStart = Math.random() * maxStart
 
-    howl.seek(start)
+    this.#startClip(howl)
+  }
+
+  #startClip(howl) {
+    this.#clearTimers()   
+    howl.stop()
+    this.onProgress?.(0)  
+    howl.seek(this.#clipStart)
     howl.play()
   }
 
@@ -88,5 +104,7 @@ export class HowlerMusicPlayer extends MusicPlayer {
     this.#clearTimers()
     this.#howl?.unload()
     this.#howl = null
+    this.#clipId = null
+    this.#clipStart = null
   }
 }
