@@ -5,7 +5,7 @@
         class="play"
         type="button"
         aria-label="Reproducir fragmento de la canción"
-        @click="playSong"
+        @click="emit('play-song')"
       >
         <svg
           viewBox="0 0 24 24"
@@ -36,8 +36,10 @@
           <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
         </svg>
 
-        <div class="audio__track" aria-hidden="true"></div>
-        <span class="audio__time">0s</span>
+        <div class="audio_track" aria-hidden="true">
+          <div class="audio_fill" :style="{ width: progressPercent + '%' }"></div>
+        </div>
+        <span class="audio_time">{{ elapsedSeconds }}s</span>
       </div>
 
       <p class="audio__caption">Reproducir fragmento de 5 segundos</p>
@@ -73,16 +75,21 @@
 
 <script setup>
 import { Answer, Question } from '@/class/Question'
-import { Howl } from 'howler'
 import { computed } from 'vue'
 
 const props = defineProps({
   question: { type: Question, required: true },
   correctAnswer: { type: Answer, default: null },
   selectedAnswer: { type: Answer, default: null },
+  elapsedMs: { type: Number, default: 0 },
+  clipDurationMs: { type: Number },
 })
-const emit = defineEmits(['select-answer', 'next-question'])
+const emit = defineEmits(['select-answer', 'next-question', 'play-song'])
 const isAnswered = computed(() => props.correctAnswer !== null)
+const progressPercent = computed(() =>
+  Math.min(100, (props.elapsedMs / props.clipDurationMs) * 100),
+)
+const elapsedSeconds = computed(() => Math.floor(props.elapsedMs / 1000))
 
 function answerStyleClass(answer) {
   if (!isAnswered.value) return null
@@ -96,41 +103,24 @@ function answerStyleClass(answer) {
     'answer--dimmed': !isCorrect && !isSelected,
   }
 }
-
-// HOWL TODO IN PARENT
-let howl
-const volume = 100
-
-function playSong() {
-  if (howl) howl.unload()
-  let song = getRandomSong()
-
-  howl = new Howl({
-    src: song,
-    volume: volume,
-    onend: onSongEnd,
-    onload: onHowlerLoaded,
-    onloaderror: onHowlerLoadError,
-    onplayerror: onHowlerPlayError,
-  })
-}
-
-function getRandomSong() {}
-
-function onSongEnd() {}
-
-function onHowlerLoaded() {}
-
-function onHowlerLoadError(id, error) {
-  console.error(`Error loading audio (id ${id}):`, error)
-}
-
-function onHowlerPlayError(id, error) {
-  console.error(`Error playing audio (id ${id}):`, error)
-}
 </script>
 
 <style scoped>
+.audio_track {
+  flex: 1;
+  height: 6px;
+  overflow: hidden; /* clips the fill to the rounded track */
+  border-radius: 999px;
+  background: #e5e6ea;
+}
+
+.audio_fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #a855f7, #ec4899);
+  transition: width 0.1s linear; /* smooths the 100ms steps */
+}
+
 .card-container {
   margin-top: 16px;
   padding: 26px 24px 30px;

@@ -44,7 +44,7 @@
       <div class="progress">
         <div class="progress__labels">
           <span class="progress__step"
-            >Pregunta {{ questionNumber }} de {{ maxQuestionNumber }}</span
+            >Pregunta {{ questionNumber }} de {{ MAX_QUESTIONS_NUMBER }}</span
           >
           <span class="progress__percent">30%</span>
         </div>
@@ -66,24 +66,29 @@
         :question="liveQuestion"
         :correct-answer="correctAnswer"
         :selected-answer="selectedAnswer"
+        :elapsed-ms="elapsedMs"
+        :clipDurationMs="CLIP_DURATION_MS"
         @select-answer="onAnswerSelect"
-        @next-question="goToNextQuestion"
+        @next-question="onNextQuestionClicked"
+        @play-song="onPlaySongRequested"
       />
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useUserStore } from '@/stores/user-store.js'
 import QuestionComponent from './QuestionComponent.vue'
 
-// TODO
 import songs from '@/songs.json'
 import questions from '@/questions.json'
 import { Question } from '@/class/Question.js'
+import { HowlerMusicPlayer } from '@/services/HowlerMusicPlayer.js'
 
 const POINTS_PER_CORRECT_ANSWER = 10
+const MAX_QUESTIONS_NUMBER = 10
+const CLIP_DURATION_MS = 5000
 
 const username = ref('')
 const score = ref(null)
@@ -91,9 +96,10 @@ const questionNumber = ref(0)
 const liveQuestion = ref(null)
 const correctAnswer = ref(null)
 const selectedAnswer = ref(null)
+const elapsedMs = ref(0)
 
-const maxQuestionNumber = 10
 const userStore = useUserStore()
+const isFinished = computed(() => questionsDone.length === MAX_QUESTIONS_NUMBER)
 
 const questionsLinked = questions.map((question) => {
   question.song = songs.find((song) => song.id === question.songId)
@@ -101,6 +107,13 @@ const questionsLinked = questions.map((question) => {
 })
 // push questions already answered to array
 const questionsDone = []
+
+const musicPlayer = new HowlerMusicPlayer({
+  clipDurationMs: CLIP_DURATION_MS,
+  onProgress: (ms) => (elapsedMs.value = ms),
+  onError: (error) => console.error('Error playing song: ', error),
+  onEnd: () => (elapsedMs.value = CLIP_DURATION_MS),
+})
 
 username.value = userStore.username
 score.value = userStore.score
@@ -112,7 +125,12 @@ function drawRandomQuestionFromPool() {
   return randomQuestion
 }
 
-function goToNextQuestion() {
+function onNextQuestionClicked() {
+  musicPlayer.destroy()
+  elapsedMs.value = 0
+
+  if (isFinished.value) return
+
   if (liveQuestion.value) questionsDone.push(liveQuestion.value)
   liveQuestion.value = drawRandomQuestionFromPool()
   questionNumber.value++
@@ -126,14 +144,23 @@ function onAnswerSelect(answer) {
 
   selectedAnswer.value = answer
   correctAnswer.value = liveQuestion.value.answers.find((answr) => answr.isCorrect)
-  if (answer.isCorrect) score.value += POINTS_PER_CORRECT_ANSWER
+  if (answer.isCorrect) updateScore()
+}
+
+function updateScore() {
+  score.value += POINTS_PER_CORRECT_ANSWER
+  userStore.score = score.value
 }
 
 function setup() {
-  goToNextQuestion()
+  onNextQuestionClicked()
 }
 
 setup()
+
+function onPlaySongRequested() {
+  musicPlayer.playClip(liveQuestion.value.song)
+}
 </script>
 
 <style scoped>
