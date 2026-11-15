@@ -66,7 +66,7 @@
           </button>
         </li>
       </ul>
-      <button class="next" :disabled="correctAnswer == null" @click="emit('next-question')">
+      <button class="next" :disabled="correctAnswer === null" @click="emit('next-question')">
         Siguiente Pregunta
       </button>
     </div>
@@ -288,6 +288,11 @@ function answerStyleClass(answer) {
 }
 
 .answer--dimmed {
+  opacity: 0.5;
+}
+
+.next:disabled {
+  cursor: not-allowed;
   opacity: 0.5;
 }
 
