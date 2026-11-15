@@ -1,6 +1,14 @@
 import { defineStore } from 'pinia'
 import { Score } from '@/class/Score'
-import rankingData from '@/ranking.json'
+
+// Vue's way to load a json file that may not exist
+const rankingFiles = import.meta.glob('/src/ranking.json', {
+  eager: true,
+  import: 'default',
+})
+
+// Glob expects multiple files
+const rankingData = Object.values(rankingFiles)[0] ?? []
 
 const STORAGE_KEY = 'concurso-musical-ranking'
 
@@ -26,7 +34,7 @@ function loadScores() {
     console.error('Error loading ranking from localStorage', error)
   }
 
-  return rankingData.map(toScore)
+  return Array.isArray(rankingData) ? rankingData.map(toScore) : []
 }
 
 export const useRankingStore = defineStore('ranking', {
