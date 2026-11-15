@@ -70,8 +70,8 @@
       </div>
 
       <p class="finished__banner">
-        {{ displayName }}, respondiste correctamente <strong>{{ correctAnswers }}</strong> de
-        {{ answeredQuestions }} preguntas
+        <span class="username">{{ displayName }} </span>, respondiste correctamente
+        <strong>{{ correctAnswers }}</strong> de {{ answeredQuestions }} preguntas
       </p>
 
       <button class="finished__button" type="button" @click="playAgain">
@@ -101,7 +101,7 @@ import { useUserStore } from '@/stores/user-store.js'
 const userStore = useUserStore()
 const router = useRouter()
 
-const displayName = computed(() => userStore.username || 'Jugador')
+const displayName = computed(() => userStore.username)
 const score = computed(() => userStore.score)
 const correctAnswers = computed(() => userStore.questionsCorrect.length)
 
@@ -134,6 +134,11 @@ function playAgain() {
 </script>
 
 <style scoped>
+.username {
+  font-weight: bolder;
+  font-size: large;
+}
+
 .finished {
   display: flex;
   align-items: center;
