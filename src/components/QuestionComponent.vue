@@ -66,8 +66,17 @@
           </button>
         </li>
       </ul>
-      <button class="next" :disabled="correctAnswer === null" @click="emit('next-question')">
+      <button
+        class="next"
+        :disabled="correctAnswer === null || isFinished"
+        :hidden="isFinished"
+        @click="emit('next-question')"
+      >
         Siguiente Pregunta
+      </button>
+
+      <button class="next" :disabled="!isFinished" :hidden="!isFinished" @click="emit('finished')">
+        Finalizar
       </button>
     </div>
   </div>
@@ -83,8 +92,9 @@ const props = defineProps({
   selectedAnswer: { type: Answer, default: null },
   elapsedMs: { type: Number, default: 0 },
   clipDurationMs: { type: Number },
+  isFinished: { type: Boolean, default: false },
 })
-const emit = defineEmits(['select-answer', 'next-question', 'play-song'])
+const emit = defineEmits(['select-answer', 'next-question', 'play-song', 'finished'])
 const isAnswered = computed(() => props.correctAnswer !== null)
 const progressPercent = computed(() =>
   Math.min(100, (props.elapsedMs / props.clipDurationMs) * 100),

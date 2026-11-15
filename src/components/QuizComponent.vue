@@ -67,10 +67,12 @@
         :correct-answer="correctAnswer"
         :selected-answer="selectedAnswer"
         :elapsed-ms="elapsedMs"
-        :clipDurationMs="CLIP_DURATION_MS"
+        :clip-duration-ms="CLIP_DURATION_MS"
+        :is-finished="isFinished"
         @select-answer="onAnswerSelect"
         @next-question="onNextQuestionClicked"
         @play-song="onPlaySongRequested"
+        @finished="onQuizFinished"
       />
     </div>
   </section>
@@ -78,6 +80,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user-store.js'
 import QuestionComponent from './QuestionComponent.vue'
 
@@ -99,15 +102,16 @@ const correctAnswer = ref(null)
 const selectedAnswer = ref(null)
 const elapsedMs = ref(0)
 
+const router = useRouter()
 const userStore = useUserStore()
-const isFinished = computed(() => questionsDone.length === MAX_QUESTIONS_NUMBER)
+const isFinished = computed(
+  () => questionNumber.value === MAX_QUESTIONS_NUMBER && correctAnswer.value !== null,
+)
 
 const questionsLinked = questions.map((question) => {
   question.song = songs.find((song) => song.id === question.songId)
   return new Question(question.questionId, question.song, question.answers)
 })
-// push questions already answered to array
-const questionsDone = []
 
 const musicPlayer = new HowlerMusicPlayer({
   clipDurationMs: CLIP_DURATION_MS,
@@ -117,6 +121,7 @@ const musicPlayer = new HowlerMusicPlayer({
 })
 
 username.value = userStore.username
+userStore.resetProgress()
 score.value = 0
 questionNumber.value = 0
 
@@ -136,11 +141,11 @@ function onNextQuestionClicked() {
 
   if (isFinished.value) return
 
-  if (liveQuestion.value) questionsDone.push(liveQuestion.value)
   liveQuestion.value = drawRandomQuestionFromPool()
   questionNumber.value++
   correctAnswer.value = null
   selectedAnswer.value = null
+  onPlaySongRequested()
 }
 
 /**  @param {Answer} answer */
@@ -153,8 +158,13 @@ function onAnswerSelect(answer) {
 }
 
 function updateScore(answer) {
-  if (answer.isCorrect) score.value += POINTS_PER_CORRECT_ANSWER
-  else score.value -= POINTS_PER_FAILED_ANSWER
+  if (answer.isCorrect) {
+    userStore.addCorrectQuestion(liveQuestion.value)
+    score.value += POINTS_PER_CORRECT_ANSWER
+  } else {
+    userStore.addFailedQuestion(liveQuestion.value)
+    score.value -= POINTS_PER_FAILED_ANSWER
+  }
 
   userStore.score = score.value
 }
@@ -166,6 +176,10 @@ function setup() {
 
 function onPlaySongRequested() {
   musicPlayer.playClip(liveQuestion.value.song)
+}
+
+function onQuizFinished() {
+  router.push('/finished') // home
 }
 </script>
 
