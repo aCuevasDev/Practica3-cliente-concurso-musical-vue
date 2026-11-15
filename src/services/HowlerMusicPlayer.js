@@ -17,8 +17,9 @@ export class HowlerMusicPlayer extends MusicPlayer {
    *   onError?: Function
    * }} [options]
    */
-  constructor({ onPlay, onProgress, onEnd, onError } = {}) {
-    this.#clipDurationMs = DEFAULT_CLIP_DURATION_MS
+  constructor({ clipDurationMs = DEFAULT_CLIP_DURATION_MS, onPlay, onProgress, onEnd, onError } = {}) {
+    super()
+    this.#clipDurationMs = clipDurationMs
     this.onPlay = onPlay
     this.onEnd = onEnd
     this.onError = onError
