@@ -60,15 +60,16 @@
         </div>
       </div>
 
-      <article class="card">
-        <QuestionComponent
-          :key="liveQuestion.value.questionId"
-          :question="liveQuestion"
-          :selectedIndex="selectedIndex"
-          @select-answer="answerSelected"
-        />
-      </article>
-      <button :disabled="selectedIndex == null" @click="goToNextQuestion">
+      <QuestionComponent
+        v-if="liveQuestion"
+        :key="liveQuestion.questionId"
+        :question="liveQuestion"
+        :correct-answer="correctAnswer"
+        :selected-answer="selectedAnswer"
+        @select-answer="onAnswerSelect"
+      />
+
+      <button :disabled="correctAnswer == null" @click="goToNextQuestion">
         Siguiente Pregunta
       </button>
     </div>
@@ -89,16 +90,17 @@ const POINTS_PER_CORRECT_ANSWER = 10
 
 const username = ref('')
 const score = ref(null)
-const questionNumber = ref(null)
+const questionNumber = ref(0)
 const liveQuestion = ref(null)
-const selectedIndex = ref(null)
+const correctAnswer = ref(null)
+const selectedAnswer = ref(null)
 
 const maxQuestionNumber = 10
 const userStore = useUserStore()
 
 const questionsLinked = questions.map((question) => {
   question.song = songs.find((song) => song.id === question.songId)
-  return new Question(question.id, question.song, question.answers)
+  return new Question(question.questionId, question.song, question.answers)
 })
 // push questions already answered to array
 const questionsDone = []
@@ -117,19 +119,17 @@ function goToNextQuestion() {
   if (liveQuestion.value) questionsDone.push(liveQuestion.value)
   liveQuestion.value = drawRandomQuestionFromPool()
   questionNumber.value++
+  correctAnswer.value = null
+  selectedAnswer.value = null
 }
 
-function updateScore() {}
-
 /**  @param {Answer} answer */
-function answerSelected(answer) {
-  if (selectedIndex.value !== null) return
+function onAnswerSelect(answer) {
+  if (correctAnswer.value !== null) return
 
-  const answerIndex = liveQuestion.value.answers.findIndex((answr) => answr.text === answer.text)
-  selectedIndex.value = answerIndex
-
-  const isCorrect = liveQuestion.value.answers[answerIndex].isCorrect
-  if (isCorrect) score.value += POINTS_PER_CORRECT_ANSWER
+  selectedAnswer.value = answer
+  correctAnswer.value = liveQuestion.value.answers.find((answr) => answr.isCorrect)
+  if (answer.isCorrect) score.value += POINTS_PER_CORRECT_ANSWER
 }
 
 function setup() {
@@ -251,14 +251,6 @@ setup()
   height: 100%;
   border-radius: inherit;
   background: #0b0b12;
-}
-
-.card {
-  margin-top: 16px;
-  padding: 20px 21px;
-  border-radius: 16px;
-  background: #ffffff;
-  box-shadow: 0 22px 44px rgba(88, 12, 62, 0.18);
 }
 
 .play {
