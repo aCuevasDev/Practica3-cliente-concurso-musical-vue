@@ -77,7 +77,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useUserStore } from '@/stores/user-store.js'
 import QuestionComponent from './QuestionComponent.vue'
 
@@ -87,6 +87,7 @@ import { Question } from '@/class/Question.js'
 import { HowlerMusicPlayer } from '@/services/HowlerMusicPlayer.js'
 
 const POINTS_PER_CORRECT_ANSWER = 10
+const POINTS_PER_FAILED_ANSWER = 5
 const MAX_QUESTIONS_NUMBER = 10
 const CLIP_DURATION_MS = 5000
 
@@ -116,8 +117,12 @@ const musicPlayer = new HowlerMusicPlayer({
 })
 
 username.value = userStore.username
-score.value = userStore.score
+score.value = 0
 questionNumber.value = 0
+
+onMounted(() => {
+  setup()
+})
 
 function drawRandomQuestionFromPool() {
   const randomIndex = Math.floor(Math.random() * questionsLinked.length)
@@ -144,19 +149,20 @@ function onAnswerSelect(answer) {
 
   selectedAnswer.value = answer
   correctAnswer.value = liveQuestion.value.answers.find((answr) => answr.isCorrect)
-  if (answer.isCorrect) updateScore()
+  updateScore(answer)
 }
 
-function updateScore() {
-  score.value += POINTS_PER_CORRECT_ANSWER
+function updateScore(answer) {
+  if (answer.isCorrect) score.value += POINTS_PER_CORRECT_ANSWER
+  else score.value -= POINTS_PER_FAILED_ANSWER
+
   userStore.score = score.value
 }
 
 function setup() {
   onNextQuestionClicked()
+  onPlaySongRequested()
 }
-
-setup()
 
 function onPlaySongRequested() {
   musicPlayer.playClip(liveQuestion.value.song)
