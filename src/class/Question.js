@@ -1,4 +1,3 @@
-
 export class Answer {
   constructor(text, isCorrect = false) {
     this.text = text
@@ -8,7 +7,7 @@ export class Answer {
 
 export class Question {
   /** @param {Song} song*/
-  constructor(questionId,song, answers = []) {
+  constructor(questionId, song, answers = []) {
     this.questionId = questionId
     /**@property {Song} song (I miss typescript)**/
     this.song = song

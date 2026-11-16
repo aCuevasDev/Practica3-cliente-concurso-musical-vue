@@ -9,8 +9,7 @@ export const useUserStore = defineStore('user', {
   }),
   getters: {
     isUserLoggedIn: (state) => Boolean(state.username.trim()),
-    totalQuestions: (state) =>
-      state.questionsCorrect.length + state.questionsFailed.length,
+    totalQuestions: (state) => state.questionsCorrect.length + state.questionsFailed.length,
   },
   actions: {
     setUsername(username) {
