@@ -1,7 +1,12 @@
 <template>
   <li
     class="entry"
-    :class="[positionClass, { 'entry--current': isCurrent }]"
+    :class="{
+      'entry--first': position === 1,
+      'entry--second': position === 2,
+      'entry--third': position === 3,
+      'entry--current': isCurrent,
+    }"
     :aria-current="isCurrent ? 'true' : 'false'"
   >
     <span class="entry__position" aria-hidden="true">
@@ -108,10 +113,6 @@ const props = defineProps({
 })
 
 const isPodium = computed(() => props.position <= 3)
-
-const positionClass = computed(
-  () => ['', 'entry--first', 'entry--second', 'entry--third'][props.position] ?? '',
-)
 
 const positionLabel = computed(() => POSITION_LABELS[props.position - 1] ?? '')
 
