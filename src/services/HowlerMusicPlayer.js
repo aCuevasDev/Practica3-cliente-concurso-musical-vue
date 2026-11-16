@@ -46,6 +46,7 @@ export class HowlerMusicPlayer extends MusicPlayer {
       onplay: () => this.#onHowlerPlay(howl),
       onloaderror: (id, error) => this.onError?.(error),
       onplayerror: (id, error) => this.onError?.(error),
+      html5: true,
     })
     this.#howl = howl
   }
