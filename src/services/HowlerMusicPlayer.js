@@ -3,6 +3,7 @@ import { MusicPlayer } from './MusicPlayer.js'
 
 const DEFAULT_CLIP_DURATION_MS = 5000
 const PROGRESS_INTERVAL_MS = 100
+const FADE_IN_MS = 400
 
 export class HowlerMusicPlayer extends MusicPlayer {
   #howl = null
@@ -62,9 +63,10 @@ export class HowlerMusicPlayer extends MusicPlayer {
   }
 
   #startClip(howl) {
-    this.#clearTimers()   
+    this.#clearTimers()
     howl.stop()
-    this.onProgress?.(0)  
+    this.onProgress?.(0)
+    howl.volume(0)
     howl.seek(this.#clipStart)
     howl.play()
   }
@@ -73,6 +75,8 @@ export class HowlerMusicPlayer extends MusicPlayer {
     if (this.#howl !== howl) return // We called another howler before this one started playing
 
     this.#clearTimers()
+
+    howl.fade(0, this.#volume, FADE_IN_MS)
 
     const startedAt = performance.now()
     this.#stopTimer = setTimeout(() => this.#finishClip(), this.#clipDurationMs)
