@@ -199,7 +199,6 @@ function updateScore(answer) {
 
 function setup() {
   onNextQuestionClicked()
-  onPlaySongRequested()
 }
 
 function onPlaySongRequested() {
