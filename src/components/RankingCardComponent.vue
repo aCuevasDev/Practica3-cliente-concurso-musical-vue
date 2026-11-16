@@ -2,7 +2,7 @@
   <li
     class="entry"
     :class="[positionClass, { 'entry--current': isCurrent }]"
-    :aria-current="isCurrent ? 'true' : undefined"
+    :aria-current="isCurrent ? 'true' : 'false'"
   >
     <span class="entry__position" aria-hidden="true">
       <svg

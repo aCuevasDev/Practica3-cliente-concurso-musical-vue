@@ -139,7 +139,9 @@ const ranking = computed(() =>
 const currentPlayerName = computed(() => userStore.username.trim().toLowerCase())
 
 const currentPlayerInRanking = computed(() =>
-  ranking.value.some((entry) => entry.player.toLowerCase() === currentPlayerName.value),
+  ranking.value.some(
+    (entry) => entry.player.toLowerCase() === currentPlayerName.value.toLowerCase(),
+  ),
 )
 
 const showTopTenMessage = computed(
