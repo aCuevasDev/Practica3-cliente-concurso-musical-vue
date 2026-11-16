@@ -34,6 +34,10 @@ const router = createRouter({
       component: () => import('@/views/FinishedView.vue'),
       meta: { requiresLogin: true },
     },
+    {
+      path: "/:pathMatch(.*)*",
+      redirect: '/'
+    },
   ],
 })
 
