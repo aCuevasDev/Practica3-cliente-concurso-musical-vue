@@ -201,6 +201,7 @@ function send() {
   position: relative;
   display: flex;
   align-items: center;
+  margin-top: 10px;
 }
 
 .field__icon {
