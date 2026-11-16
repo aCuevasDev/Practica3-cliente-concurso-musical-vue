@@ -114,8 +114,15 @@ const progressPercent = computed(() =>
   Math.round((questionNumber.value / MAX_QUESTIONS_NUMBER) * 100),
 )
 
+// Base url added to songs in public/
+const songsWithBaseUrl = songs.map((song) => ({
+  ...song,
+  picture: `${import.meta.env.BASE_URL}${song.picture.slice(1)}`,
+  file: `${import.meta.env.BASE_URL}${song.file.slice(1)}`,
+}))
+
 const questionsLinked = questions.map((question) => {
-  question.song = songs.find((song) => song.id === question.songId)
+  question.song = songsWithBaseUrl.find((song) => song.id === question.songId)
   return new Question(
     question.questionId,
     question.song,
