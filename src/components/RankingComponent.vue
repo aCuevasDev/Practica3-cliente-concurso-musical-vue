@@ -128,7 +128,7 @@ const rankingStore = useRankingStore()
 
 const ranking = computed(() =>
   rankingStore.scores
-    .slice()
+    .slice() // .sort mutates the array in place so we have to create a shallow copy first to not modify pinia's state
     .sort(
       (a, b) =>
         b.score - a.score || b.accuracy - a.accuracy || dateValue(b.date) - dateValue(a.date),
