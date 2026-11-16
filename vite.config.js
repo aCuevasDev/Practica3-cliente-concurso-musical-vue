@@ -7,6 +7,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/Practica3-cliente-concurso-musical-vue/',
   plugins: [
     vue(),
     vueJsx(),
