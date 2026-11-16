@@ -19,19 +19,19 @@ const router = createRouter({
     {
       path: '/play',
       name: 'play',
-      component: () => import('../views/PlayView.vue'),
+      component: () => import('@/views/PlayView.vue'),
       meta: { requiresLogin: true },
     },
     {
       path: '/ranking',
       name: 'ranking',
-      component: () => import('../views/RankingView.vue'),
+      component: () => import('@/views/RankingView.vue'),
       meta: { requiresLogin: true },
     },
     {
       path: '/finished',
       name: 'finished',
-      component: () => import('../views/FinishedView.vue'),
+      component: () => import('@/views/FinishedView.vue'),
       meta: { requiresLogin: true },
     },
   ],
