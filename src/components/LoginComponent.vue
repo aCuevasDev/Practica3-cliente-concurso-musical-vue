@@ -35,7 +35,6 @@
       </ol>
 
       <div class="field">
-        <label class="field__label" for="player-name">Tu nombre</label>
         <svg
           class="field__icon"
           viewBox="0 0 24 24"
