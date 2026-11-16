@@ -3,11 +3,13 @@
     <div class="audio--container">
       <button
         class="play"
+        :class="{ 'play--playing': isPlaying }"
         type="button"
         aria-label="Reproducir fragmento de la canción"
         @click="emit('play-song')"
       >
         <svg
+          v-if="!isPlaying"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -18,6 +20,9 @@
         >
           <polygon points="7 4 20 12 7 20 7 4"></polygon>
         </svg>
+        <span v-else class="equalizer" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+        </span>
       </button>
 
       <div class="audio">
@@ -93,6 +98,7 @@ const props = defineProps({
   elapsedMs: { type: Number, default: 0 },
   clipDurationMs: { type: Number },
   isFinished: { type: Boolean, default: false },
+  isPlaying: { type: Boolean, default: false },
 })
 const emit = defineEmits(['select-answer', 'next-question', 'play-song', 'finished'])
 const isAnswered = computed(() => props.correctAnswer !== null)
@@ -149,6 +155,7 @@ function answerStyleClass(answer) {
 }
 
 .play {
+  position: relative;
   display: grid;
   place-items: center;
   width: 54px;
@@ -177,9 +184,98 @@ function answerStyleClass(answer) {
 }
 
 .play svg {
+  position: relative;
+  z-index: 1;
   width: 18px;
   height: 18px;
   margin-left: 2px;
+}
+
+.equalizer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 18px;
+}
+
+.equalizer > span {
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: currentColor;
+  animation: equalizer-bars 0.9s ease-in-out infinite;
+}
+
+.equalizer > span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.equalizer > span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.equalizer > span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.equalizer > span:nth-child(4) {
+  animation-delay: 0.15s;
+}
+
+@keyframes equalizer-bars {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.play--playing {
+  animation: play-pulse 1.6s ease-in-out infinite;
+}
+
+.play--playing::before,
+.play--playing::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(236, 72, 153, 0.5);
+  border-radius: 50%;
+  animation: play-ripple 1.6s ease-out infinite;
+}
+
+.play--playing::after {
+  animation-delay: 0.8s;
+}
+
+@keyframes play-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 10px 22px rgba(168, 85, 247, 0.35);
+  }
+
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 14px 30px rgba(236, 72, 153, 0.45);
+  }
+}
+
+@keyframes play-ripple {
+  from {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
 }
 
 .audio {
@@ -203,10 +299,18 @@ function answerStyleClass(answer) {
   background: #e5e6ea;
 }
 
-.audio__time {
+.audio_time {
   flex: none;
-  font-size: 11px;
-  color: #9ca3af;
+  min-width: 44px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: #6b7280;
+  background: #f3f4f6;
 }
 
 .audio__caption {
@@ -350,6 +454,17 @@ function answerStyleClass(answer) {
 
   .play:hover {
     transform: none;
+  }
+
+  .play--playing,
+  .play--playing::before,
+  .play--playing::after {
+    animation: none;
+  }
+
+  .equalizer > span {
+    animation: none;
+    transform: scaleY(0.6);
   }
 }
 

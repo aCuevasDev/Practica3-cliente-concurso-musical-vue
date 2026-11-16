@@ -69,6 +69,7 @@
         :elapsed-ms="elapsedMs"
         :clip-duration-ms="CLIP_DURATION_MS"
         :is-finished="isFinished"
+        :is-playing="isPlaying"
         @select-answer="onAnswerSelect"
         @next-question="onNextQuestionClicked"
         @play-song="onPlaySongRequested"
@@ -102,6 +103,7 @@ const liveQuestion = ref(null)
 const correctAnswer = ref(null)
 const selectedAnswer = ref(null)
 const elapsedMs = ref(0)
+const isPlaying = ref(false)
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -132,9 +134,13 @@ const questionsLinked = questions.map((question) => {
 
 const musicPlayer = new HowlerMusicPlayer({
   clipDurationMs: CLIP_DURATION_MS,
+  onPlay: () => (isPlaying.value = true),
   onProgress: (ms) => (elapsedMs.value = ms),
   onError: (error) => console.error('Error playing song: ', error),
-  onEnd: () => (elapsedMs.value = CLIP_DURATION_MS),
+  onEnd: () => {
+    isPlaying.value = false
+    elapsedMs.value = CLIP_DURATION_MS
+  },
 })
 
 username.value = userStore.username
@@ -158,6 +164,7 @@ function drawRandomQuestionFromPool() {
 
 function onNextQuestionClicked() {
   musicPlayer.destroy()
+  isPlaying.value = false
   elapsedMs.value = 0
 
   if (isFinished.value) return
