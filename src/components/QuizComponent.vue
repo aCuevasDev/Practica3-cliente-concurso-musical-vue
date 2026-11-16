@@ -87,7 +87,7 @@ import QuestionComponent from './QuestionComponent.vue'
 
 import songs from '@/songs.json'
 import questions from '@/questions.json'
-import { Question } from '@/class/Question.js'
+import { Answer, Question } from '@/class/Question.js'
 import { HowlerMusicPlayer } from '@/services/HowlerMusicPlayer.js'
 
 const POINTS_PER_CORRECT_ANSWER = 10
@@ -116,7 +116,11 @@ const progressPercent = computed(() =>
 
 const questionsLinked = questions.map((question) => {
   question.song = songs.find((song) => song.id === question.songId)
-  return new Question(question.questionId, question.song, question.answers)
+  return new Question(
+    question.questionId,
+    question.song,
+    question.answers.map((answr) => new Answer(answr.text, answr.isCorrect)),
+  )
 })
 
 const musicPlayer = new HowlerMusicPlayer({
